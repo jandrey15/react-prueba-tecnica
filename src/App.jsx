@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 const CAT_ENDPOINT_RANDOM_FACTORY = 'https://catfact.ninja/fact'
 const CAT_PREFIX_IMAGE_URL = 'https://cataas.com'
+// https://reactjs.org/docs/hooks-rules.html
 
 export function App () {
   const [fact, setFact] = useState()
@@ -26,6 +27,15 @@ export function App () {
           })
       })
   }, [])
+
+  /*
+  🔴 We're breaking the first rule by using a Hook in a condition
+  if (fact) {
+    useEffect(() => {
+      console.log('hola mundo')
+    }, [])
+  }
+  */
 
   return (
     <main>
