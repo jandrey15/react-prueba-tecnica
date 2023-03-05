@@ -8,23 +8,13 @@ export function App () {
   const [fact, setFact] = useState()
   const [imageUrl, setImageUrl] = useState()
 
+  // recuperar la cita
   useEffect(() => {
     fetch(CAT_ENDPOINT_RANDOM_FACTORY)
       .then(res => res.json())
       .then(data => {
         const { fact } = data
         setFact(fact)
-
-        const threeFirstWords = fact.split(' ', 3).join(' ')
-        console.log(threeFirstWords)
-
-        fetch(`https://cataas.com/cat/says/${threeFirstWords}?json=true`)
-          .then(res => res.json())
-          .then(response => {
-            console.log(response)
-            const { url } = response
-            setImageUrl(url)
-          })
       })
   }, [])
 
@@ -36,6 +26,22 @@ export function App () {
     }, [])
   }
   */
+
+  // recuperar la imagen apartir de la cita recuperada
+  useEffect(() => {
+    if (!fact) return
+
+    const threeFirstWords = fact.split(' ', 3).join(' ')
+    console.log(threeFirstWords)
+
+    fetch(`${CAT_PREFIX_IMAGE_URL}/cat/says/${threeFirstWords}?json=true`)
+      .then(res => res.json())
+      .then(response => {
+        console.log(response)
+        const { url } = response
+        setImageUrl(url)
+      })
+  }, [fact])
 
   return (
     <main>
