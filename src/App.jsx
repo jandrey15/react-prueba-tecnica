@@ -7,14 +7,21 @@ const CAT_PREFIX_IMAGE_URL = 'https://cataas.com'
 export function App () {
   const [fact, setFact] = useState()
   const [imageUrl, setImageUrl] = useState()
+  const [fatcError, setFatcError] = useState()
 
   // recuperar la cita
   useEffect(() => {
     fetch(CAT_ENDPOINT_RANDOM_FACTORY)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Error fetching fact')
+        return res.json
+      })
       .then(data => {
         const { fact } = data
         setFact(fact)
+      })
+      .catch(err => {
+        setFatcError(err)
       })
   }, [])
 
@@ -46,6 +53,7 @@ export function App () {
   return (
     <main>
       <h1>App de gatitos</h1>
+      {fatcError && <p>Error: {fatcError}</p>}
       {fact && <p>{fact}</p>}
       {imageUrl && <img src={`${CAT_PREFIX_IMAGE_URL}${imageUrl}`} alt={`Image extracted the first three words for ${fact}`} />}
     </main>
