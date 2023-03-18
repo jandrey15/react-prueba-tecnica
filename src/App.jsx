@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { getCatImage } from './services/cat-image'
 import { getRandomFact } from './services/fact'
 
 const CAT_PREFIX_IMAGE_URL = 'https://cataas.com'
@@ -11,8 +12,8 @@ export function App () {
 
   // recuperar la cita
   useEffect(() => {
-    getRandomFact().then(setFact) // shor
-    // getRandomFact().then(fact => setFact(fact)).catch(err => console.log(err)) // long
+    // getRandomFact().then(setFact) // shor
+    getRandomFact().then(fact => setFact(fact)).catch(err => console.log(err)) // long
   }, [])
 
   /*
@@ -31,13 +32,7 @@ export function App () {
     const threeFirstWords = fact.split(' ', 3).join(' ')
     console.log(threeFirstWords)
 
-    fetch(`${CAT_PREFIX_IMAGE_URL}/cat/says/${threeFirstWords}?json=true`)
-      .then(res => res.json())
-      .then(response => {
-        console.log(response)
-        const { url } = response
-        setImageUrl(url)
-      })
+    getCatImage({ threeFirstWords }).then(url => setImageUrl(url))
   }, [fact])
 
   const handleClick = async () => {

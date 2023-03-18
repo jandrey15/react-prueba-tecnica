@@ -9,7 +9,7 @@ export function getRandomFact () {
     .then(data => {
       console.log({ data })
       const { fact } = data
-      // setFact(fact)
+      // setFact(fact) Mala practica
       return fact
     })
     .catch(err => {
