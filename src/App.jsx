@@ -5,9 +5,24 @@ import { getRandomFact } from './services/fact'
 const CAT_PREFIX_IMAGE_URL = 'https://cataas.com'
 // https://reactjs.org/docs/hooks-rules.html
 
+function useCatImage ({ fact }) {
+  const [imageUrl, setImageUrl] = useState()
+  // recuperar la imagen apartir de la cita recuperada
+  useEffect(() => {
+    if (!fact) return
+
+    const threeFirstWords = fact.split(' ', 3).join(' ')
+    console.log(threeFirstWords)
+
+    getCatImage({ threeFirstWords }).then(url => setImageUrl(url))
+  }, [fact])
+
+  return { imageUrl }
+} // { imageUrl: 'http://...' }
+
 export function App () {
   const [fact, setFact] = useState()
-  const [imageUrl, setImageUrl] = useState()
+  const { imageUrl } = useCatImage({ fact })
   // const [fatcError, setFatcError] = useState()
 
   // recuperar la cita
@@ -25,16 +40,6 @@ export function App () {
   }
   */
 
-  // recuperar la imagen apartir de la cita recuperada
-  useEffect(() => {
-    if (!fact) return
-
-    const threeFirstWords = fact.split(' ', 3).join(' ')
-    console.log(threeFirstWords)
-
-    getCatImage({ threeFirstWords }).then(url => setImageUrl(url))
-  }, [fact])
-
   const handleClick = async () => {
     const fact = await getRandomFact()
     setFact(fact)
@@ -43,7 +48,7 @@ export function App () {
   return (
     <main>
       <h1>App de gatitos</h1>
-      <button onClick={handleClick}>Click me</button>
+      <button onClick={handleClick}>Get new fact</button>
       {/* {fatcError && <p>Error: {fatcError}</p>} */}
       {fact && <p>{fact}</p>}
       {imageUrl && <img src={`${CAT_PREFIX_IMAGE_URL}${imageUrl}`} alt={`Image extracted the first three words for ${fact}`} />}
