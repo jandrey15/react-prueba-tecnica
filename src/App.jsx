@@ -5,16 +5,23 @@ import { getRandomFact } from './services/fact'
 const CAT_PREFIX_IMAGE_URL = 'https://cataas.com'
 // https://reactjs.org/docs/hooks-rules.html
 
-export function App () {
+const useCatFact = () => {
   const [fact, setFact] = useState()
+
+  const refreshFact = () => {
+    getRandomFact().then(fact => setFact(fact)).catch(err => console.log(err)) // long
+    // getRandomFact().then(setFact) // shor
+  }
+  // recuperar la cita
+  useEffect(refreshFact, [])
+
+  return { fact, refreshFact }
+} // { fact, refreshFact }
+
+export function App () {
+  const { fact, refreshFact } = useCatFact()
   const { imageUrl } = useCatImage({ fact })
   // const [fatcError, setFatcError] = useState()
-
-  // recuperar la cita
-  useEffect(() => {
-    // getRandomFact().then(setFact) // shor
-    getRandomFact().then(fact => setFact(fact)).catch(err => console.log(err)) // long
-  }, [])
 
   /*
   🔴 We're breaking the first rule by using a Hook in a condition
@@ -26,8 +33,7 @@ export function App () {
   */
 
   const handleClick = async () => {
-    const fact = await getRandomFact()
-    setFact(fact)
+    refreshFact()
   }
 
   return (
