@@ -1,22 +1,8 @@
-import { useEffect, useState } from 'react'
 import { useCatImage } from './hooks/useCatImage'
-import { getRandomFact } from './services/fact'
+import { useCatFact } from './hooks/useCatFact'
 
 const CAT_PREFIX_IMAGE_URL = 'https://cataas.com'
 // https://reactjs.org/docs/hooks-rules.html
-
-const useCatFact = () => {
-  const [fact, setFact] = useState()
-
-  const refreshFact = () => {
-    getRandomFact().then(fact => setFact(fact)).catch(err => console.log(err)) // long
-    // getRandomFact().then(setFact) // shor
-  }
-  // recuperar la cita
-  useEffect(refreshFact, [])
-
-  return { fact, refreshFact }
-} // { fact, refreshFact }
 
 export function App () {
   const { fact, refreshFact } = useCatFact()
