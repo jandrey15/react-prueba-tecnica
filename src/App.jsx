@@ -1,7 +1,6 @@
 import { useCatImage } from './hooks/useCatImage'
 import { useCatFact } from './hooks/useCatFact'
 
-const CAT_PREFIX_IMAGE_URL = 'https://cataas.com'
 // https://reactjs.org/docs/hooks-rules.html
 
 export function App () {
@@ -28,7 +27,7 @@ export function App () {
       <button onClick={handleClick}>Get new fact</button>
       {/* {fatcError && <p>Error: {fatcError}</p>} */}
       {fact && <p>{fact}</p>}
-      {imageUrl && <img src={`${CAT_PREFIX_IMAGE_URL}${imageUrl}`} alt={`Image extracted the first three words for ${fact}`} />}
+      {imageUrl && <img src={imageUrl} alt={`Image extracted the first three words for ${fact}`} />}
     </main>
   )
 }
